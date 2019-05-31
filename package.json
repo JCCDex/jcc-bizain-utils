@@ -1,0 +1,26 @@
+{
+  "name": "jcc-bizain-utils",
+  "version": "0.1.0",
+  "description": "Toolkit of crossing chain from Bizain chain to SWTC chain",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JCCDex/jcc-bizain-utils.git"
+  },
+  "keywords": [
+    "cross-chain",
+    "jccdex",
+    "bizain-chain",
+    "swtc-chain",
+    "blockchain"
+  ],
+  "author": "JCCDex",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/JCCDex/jcc-bizain-utils/issues"
+  },
+  "homepage": "https://github.com/JCCDex/jcc-bizain-utils#readme"
+}
