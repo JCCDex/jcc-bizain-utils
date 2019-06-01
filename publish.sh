@@ -2,11 +2,11 @@
 username=$(npm whoami)
 echo $username
 if test "$username" = "jccdex"; then
-    # if test "$1" = "";then
-    #     npm version patch --no-git-tag-version
-    # else
-    #     npm version $1 --no-git-tag-version
-    # fi
+    if test "$1" = "";then
+        npm version patch --no-git-tag-version
+    else
+        npm version $1 --no-git-tag-version
+    fi
     npm run build
     npm publish
 else
