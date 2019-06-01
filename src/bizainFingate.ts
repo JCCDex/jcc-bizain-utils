@@ -1,8 +1,8 @@
 
-import * as jtWallet from "jcc_wallet/lib/jingtum";
 import { Remote } from "jcc_jingtum_lib";
+import * as jtWallet from "jcc_wallet/lib/jingtum";
 import IMemo from "./model/memo";
-import { isValidAmount, isValidMemo, isValidBizainAddress, isValidBizainSecret, validate } from "./validator";
+import { isValidAmount, isValidBizainAddress, isValidBizainSecret, isValidMemo, validate } from "./validator";
 
 export default class BizainFingate {
 
@@ -55,8 +55,8 @@ export default class BizainFingate {
     public init(): BizainFingate {
         const _server = {
             local_sign: this._localSign,
-            token: BizainFingate._token,
-            server: this._server
+            server: this._server,
+            token: BizainFingate._token
         };
         this._remote = new Remote(_server);
         return this;
@@ -84,12 +84,12 @@ export default class BizainFingate {
             const address = BizainFingate.getAddress(secret);
             const tx = {
                 account: address,
-                to: destination,
                 amount: {
                     currency: this._currency.toUpperCase(),
                     issuer: "",
                     value
-                }
+                },
+                to: destination
             };
 
             if (tx.amount.currency !== BizainFingate._token) {
