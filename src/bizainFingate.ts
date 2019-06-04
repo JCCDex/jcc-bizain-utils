@@ -65,7 +65,6 @@ export default class BizainFingate {
     public async connect() {
         return new Promise((resolve, reject) => {
             this._remote.connect((error) => {
-                console.log(error);
                 if (error) {
                     return reject(error);
                 }
