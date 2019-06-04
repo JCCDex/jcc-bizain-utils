@@ -1,47 +1,45 @@
-module.exports = function(config) {
-  config.set({
-    frameworks: ["browserify", "detectBrowsers", "mocha"],
-    files: [
-      "test/*.spec.js"
-    ],
-    preprocessors: {
-      "test/*.spec.js": ["webpack"]
-    },
-    singleRun: true,
-    plugins: [
-      "karma-webpack",
-      "karma-browserify",
-      "karma-chrome-launcher",
-      "karma-env-preprocessor",
-      "karma-firefox-launcher",
-      "karma-detect-browsers",
-      "karma-mocha"
-    ],
-    webpack: {
-      node: {
-        fs: "empty",
-        tls: "empty",
-        "child_process": "empty",
-        net: "empty"
-      },
-      mode: "development"
-    },
-    envPreprocessor: [
-      "RANDOM_TESTS_REPEAT"
-    ],
-    detectBrowsers: {
-      enabled: true,
-      usePhantomJS: false,
-      postDetection(availableBrowser) {
-        if (availableBrowser.includes("Chrome")) {
-          return ["ChromeHeadless"];
-        }
+const webpackConfig = require("./webpack.config");
 
-        var browsers = ["Chrome", "Firefox"];
-        return browsers.filter(function(browser) {
-          return availableBrowser.indexOf(browser) !== -1;
-        });
-      }
-    }
-  });
+module.exports = function(config) {
+    config.set({
+        frameworks: ["browserify", "detectBrowsers", "mocha"],
+        files: [
+            "test/*.spec.js"
+        ],
+        preprocessors: {
+            "test/*.spec.js": ["webpack"]
+        },
+        singleRun: true,
+        plugins: [
+            "karma-webpack",
+            "karma-browserify",
+            "karma-chrome-launcher",
+            "karma-env-preprocessor",
+            "karma-firefox-launcher",
+            "karma-detect-browsers",
+            "karma-mocha"
+        ],
+        webpack: {
+            node: webpackConfig.node,
+            resolve: webpackConfig.resolve,
+            mode: "development"
+        },
+        envPreprocessor: [
+            "RANDOM_TESTS_REPEAT"
+        ],
+        detectBrowsers: {
+            enabled: true,
+            usePhantomJS: false,
+            postDetection(availableBrowser) {
+                if (availableBrowser.includes("Chrome")) {
+                    return ["ChromeHeadless"];
+                }
+
+                var browsers = ["Chrome", "Firefox"];
+                return browsers.filter(function(browser) {
+                    return availableBrowser.indexOf(browser) !== -1;
+                });
+            }
+        }
+    });
 };

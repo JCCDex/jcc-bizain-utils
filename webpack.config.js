@@ -15,13 +15,14 @@ const config = {
         extensions: [".js", ".ts"],
         alias: {
             "bn.js": path.resolve(__dirname, "node_modules/bn.js")
-            // "bignumber.js": path.resolve(__dirname, "node_modules/bignumber.js")
         }
     },
     mode: process.env.MODE === "dev" ? 'development' : "production",
     node: {
         fs: "empty",
-        tls: "empty"
+        tls: "empty",
+        "child_process": "empty",
+        net: "empty"
     },
     module: {
         rules: [{
