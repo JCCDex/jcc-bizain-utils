@@ -4,40 +4,42 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const pkg = require("./package.json");
 
 const config = {
-    entry: "./src/index.ts",
-    output: {
-        filename: "jcc-bizain-utils." + pkg.version + ".js",
-        path: path.resolve(__dirname, "./dist"),
-        libraryTarget: "umd"
-    },
-    target: "web",
-    resolve: {
-        extensions: [".js", ".ts"],
-        alias: {
-            "bn.js": path.resolve(__dirname, "node_modules/bn.js")
-        }
-    },
-    mode: process.env.MODE === "dev" ? 'development' : "production",
-    node: {
-        fs: "empty",
-        tls: "empty",
-        "child_process": "empty",
-        net: "empty"
-    },
-    module: {
-        rules: [{
-            test: /\.tsx?$/,
-            use: "ts-loader",
-            exclude: /node_modules/
-        }]
-    },
-    plugins: [
-        new DuplicatePackageCheckerPlugin()
-    ]
+  entry: "./src/index.ts",
+  output: {
+    filename: "jcc-bizain-utils." + pkg.version + ".js",
+    path: path.resolve(__dirname, "./dist"),
+    libraryTarget: "umd"
+  },
+  target: "web",
+  resolve: {
+    extensions: [".js", ".ts"],
+    alias: {
+      "bn.js": path.resolve(__dirname, "node_modules/bn.js")
+    }
+  },
+  mode: process.env.MODE === "dev" ? 'development' : "production",
+  node: {
+    fs: "empty",
+    tls: "empty",
+    "child_process": "empty",
+    net: "empty"
+  },
+  module: {
+    rules: [{
+      test: /\.tsx?$/,
+      use: "ts-loader",
+      exclude: /node_modules/
+    }]
+  },
+  plugins: [
+    new DuplicatePackageCheckerPlugin({
+      strict: false
+    })
+  ]
 };
 
 if (process.env.REPORT === "true") {
-    config.plugins.push(new BundleAnalyzerPlugin())
+  config.plugins.push(new BundleAnalyzerPlugin())
 }
 
 module.exports = config;
