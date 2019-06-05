@@ -1,5 +1,5 @@
-import bizainFingate from "./bizainFingate";
+import BizainFingate from "./bizainFingate";
 
-export default bizainFingate;
+export default BizainFingate;
 
-export { bizainFingate };
+export { BizainFingate };

@@ -8,6 +8,7 @@ const config = {
   output: {
     filename: "jcc-bizain-utils." + pkg.version + ".js",
     path: path.resolve(__dirname, "./dist"),
+    library: "jcc_bizain_utils",
     libraryTarget: "umd"
   },
   target: "web",
