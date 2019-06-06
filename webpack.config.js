@@ -1,10 +1,11 @@
 const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require("./package.json");
 
 const config = {
-  entry: "./src/index.ts",
+  entry: "./lib",
   output: {
     filename: "jcc-bizain-utils." + pkg.version + ".js",
     path: path.resolve(__dirname, "./dist"),
@@ -35,6 +36,19 @@ const config = {
   plugins: [
     new DuplicatePackageCheckerPlugin({
       strict: false
+    }),
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          sequences: true,
+          dead_code: true,
+          drop_console: true,
+          drop_debugger: true,
+          unused: true
+        }
+      },
+      sourceMap: false,
+      parallel: true
     })
   ]
 };
