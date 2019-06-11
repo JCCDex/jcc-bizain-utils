@@ -3,6 +3,7 @@ const chai = require("chai");
 const expect = chai.expect;
 const sinon = require("sinon");
 const Transaction = require("jcc_jingtum_lib").Transaction;
+const Request = require("jcc_jingtum_lib").Request;
 const sandbox = sinon.createSandbox();
 
 const testAddress = "bMAy4Pu8CSf5apR44HbYyLFKeC9Dbau16Q";
@@ -116,6 +117,64 @@ describe("test bizain fingate", function() {
       let spy = sandbox.stub(inst.remote, "disconnect");
       inst.disconnect();
       expect(spy.calledOnce).to.true;
+    });
+  });
+
+  describe("test disconnect", function() {
+
+    let inst;
+
+    before(() => {
+      inst = new BizainFingate(testServer);
+      inst.init();
+      inst.connect();
+    })
+
+    after(() => {
+      inst.disconnect();
+    })
+
+    afterEach(() => {
+      sandbox.restore();
+    })
+
+    it("resolve string number if request success", async function() {
+      let spy = sandbox.spy(inst.remote, "requestAccountRelations");
+      let stub = sandbox.stub(Request.prototype, "submit");
+      stub.yields(null, {
+        lines: [{
+          currency: "BIZ",
+          balance: "10.01"
+        }]
+      })
+      const balance = await inst.balanceOf(testAddress);
+      expect(spy.calledOnceWith({
+        account: testAddress,
+        type: "trust"
+      })).to.true;
+      expect(balance).to.equal("10.01");
+    });
+
+    it("resolve 0 if request currency is not exist", async function() {
+      inst.currency = "BWT";
+      let stub = sandbox.stub(Request.prototype, "submit");
+      stub.yields(null, {
+        lines: [{
+          currency: "BIZ",
+          balance: "10.01"
+        }]
+      })
+      const balance = await inst.balanceOf(testAddress);
+      expect(balance).to.equal("0");
+    });
+
+    it("reject error if request failed", function(done) {
+      let stub = sandbox.stub(Request.prototype, "submit");
+      stub.yields(new Error("connect error"), null);
+      inst.balanceOf(testAddress).catch((error) => {
+        expect(error.message).to.equal("connect error");
+        done()
+      });
     });
   });
 

@@ -1,4 +1,3 @@
-
 import { Remote } from "jcc_jingtum_lib";
 import * as jtWallet from "jcc_wallet/lib/jingtum";
 import IMemo from "./model/memo";
@@ -75,6 +74,33 @@ export default class BizainFingate {
 
     public disconnect() {
         this._remote.disconnect();
+    }
+
+    /**
+     * request balance of currency
+     *
+     * @param {string} address
+     * @returns {Promise<string>}
+     * @memberof BizainFingate
+     */
+    public balanceOf(address: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this._remote.requestAccountRelations({
+                account: address,
+                type: "trust"
+            }).submit((err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                try {
+                    const lines = results.lines;
+                    const currencyInfo = lines.find((line) => line.currency.toUpperCase() === this._currency.toUpperCase());
+                    return resolve(currencyInfo.balance);
+                } catch (error) {
+                    return resolve("0");
+                }
+            });
+        });
     }
 
     @validate

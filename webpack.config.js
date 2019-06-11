@@ -2,12 +2,11 @@ const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const pkg = require("./package.json");
 
 const config = {
   entry: "./lib",
   output: {
-    filename: "jcc-bizain-utils." + pkg.version + ".js",
+    filename: "jcc-bizain-utils.min.js",
     path: path.resolve(__dirname, "./dist"),
     library: "jcc_bizain_utils",
     libraryTarget: "umd"
@@ -36,25 +35,28 @@ const config = {
   plugins: [
     new DuplicatePackageCheckerPlugin({
       strict: false
-    }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          sequences: true,
-          dead_code: true,
-          drop_console: true,
-          drop_debugger: true,
-          unused: true
-        }
-      },
-      sourceMap: false,
-      parallel: true
     })
   ]
 };
 
 if (process.env.REPORT === "true") {
   config.plugins.push(new BundleAnalyzerPlugin())
+}
+
+if (process.env.MODE !== "dev") {
+  config.plugins.push(new UglifyJsPlugin({
+    uglifyOptions: {
+      compress: {
+        sequences: true,
+        dead_code: true,
+        drop_console: true,
+        drop_debugger: true,
+        unused: true
+      }
+    },
+    sourceMap: false,
+    parallel: true
+  }));
 }
 
 module.exports = config;

@@ -1,8 +1,9 @@
 {
   "name": "jcc-bizain-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Toolkit of crossing chain from Bizain chain to SWTC chain",
   "main": "lib/index.js",
+  "unpkg": "dist/jcc-bizain-utils.min.js",
   "scripts": {
     "deploy": "./publish.sh",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
@@ -19,7 +20,8 @@
     "url": "git+https://github.com/JCCDex/jcc-bizain-utils.git"
   },
   "files": [
-    "lib"
+    "lib",
+    "dist"
   ],
   "dependencies": {
     "@types/node": "^12.0.4",
