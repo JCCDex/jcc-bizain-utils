@@ -1,6 +1,6 @@
 {
   "name": "jcc-bizain-utils",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Toolkit of crossing chain from Bizain chain to SWTC chain",
   "main": "lib/index.js",
   "unpkg": "dist/jcc-bizain-utils.min.js",

@@ -129,7 +129,10 @@ export default class BizainFingate {
                 if (error) {
                     return reject(error);
                 }
-                return resolve(res.tx_json.hash);
+                if (res.engine_result === "tesSUCCESS") {
+                    return resolve(res.tx_json.hash);
+                }
+                return reject(new Error(res.engine_result_message));
             });
         });
     }

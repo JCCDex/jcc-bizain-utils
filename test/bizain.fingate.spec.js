@@ -227,11 +227,12 @@ describe("test bizain fingate", function() {
       })
     })
 
-    it("transfer success ", function(done) {
+    it("transfer success", function(done) {
       let spy = sandbox.stub(inst.remote, "connect");
       spy.yields(null);
       let stub = sandbox.stub(Transaction.prototype, "submit");
       stub.yields(null, {
+        engine_result: "tesSUCCESS",
         tx_json: {
           hash: "123456"
         }
@@ -260,6 +261,29 @@ describe("test bizain fingate", function() {
           expect(s2.getCall(0).args[0]).to.equal(10);
           expect(args2[0]).to.equal('{"jtaddress":"jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH"}');
           expect(hash).to.equal("123456");
+          done();
+          sandbox.restore();
+        });
+      })
+    })
+
+    it("transfer fail", function(done) {
+      let spy = sandbox.stub(inst.remote, "connect");
+      spy.yields(null);
+      let stub = sandbox.stub(Transaction.prototype, "submit");
+      stub.yields(null, {
+        engine_result: "tecUNFUNDED_PAYMENT",
+        engine_result_message: 'Insufficient STM balance to send.'
+      });
+      let s = sandbox.stub(Transaction.prototype, "setSecret");
+      let s1 = sandbox.spy(inst.remote, "buildPaymentTx");
+      let s2 = sandbox.stub(Transaction.prototype, "setTransferRate");
+      let s3 = sandbox.spy(Transaction.prototype, "addMemo");
+      inst.connect().then(() => {
+        inst.transfer(testSecret, testDestination, 0.1, {
+          jtaddress: "jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH"
+        }).catch(error => {
+          expect(error.message).to.equal("Insufficient STM balance to send.")
           done();
           sandbox.restore();
         });
