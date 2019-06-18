@@ -26,7 +26,7 @@
   "dependencies": {
     "@types/node": "^12.0.4",
     "jcc_jingtum_lib": "^1.4.9",
-    "jcc_wallet": "^0.3.5"
+    "jcc_wallet": "^0.4.0"
   },
   "devDependencies": {
     "babelify": "^10.0.0",
