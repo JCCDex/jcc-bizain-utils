@@ -184,6 +184,11 @@ describe("test bizain fingate", function() {
       inst = new BizainFingate(testServer);
       inst.init();
     })
+
+    afterEach(() => {
+      sandbox.restore();
+    })
+
     it("throw error if the secret is invalid", function() {
       expect(() => inst.transfer("111", "111", 1, {
         jtaddress: "111"
@@ -197,7 +202,7 @@ describe("test bizain fingate", function() {
     })
 
     it("throw error if the amount is invalid", function() {
-      expect(() => inst.transfer(testSecret, testAddress, 0, {
+      expect(() => inst.transfer(testSecret, testAddress, "0", {
         jtaddress: "111"
       })).throws("0 is invalid amount.")
     })
@@ -222,7 +227,6 @@ describe("test bizain fingate", function() {
           stub.restore();
           expect(error.message).to.equal("connect error");
           done();
-          sandbox.restore();
         });
       })
     })
@@ -242,7 +246,7 @@ describe("test bizain fingate", function() {
       let s2 = sandbox.stub(Transaction.prototype, "setTransferRate");
       let s3 = sandbox.spy(Transaction.prototype, "addMemo");
       inst.connect().then(() => {
-        inst.transfer(testSecret, testDestination, 0.1, {
+        inst.transfer(testSecret, testDestination, "0.1", {
           jtaddress: "jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH"
         }).then(hash => {
           let args = s.getCall(0).args;
@@ -262,7 +266,6 @@ describe("test bizain fingate", function() {
           expect(args2[0]).to.equal('{"jtaddress":"jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH"}');
           expect(hash).to.equal("123456");
           done();
-          sandbox.restore();
         });
       })
     })
@@ -275,17 +278,12 @@ describe("test bizain fingate", function() {
         engine_result: "tecUNFUNDED_PAYMENT",
         engine_result_message: 'Insufficient STM balance to send.'
       });
-      let s = sandbox.stub(Transaction.prototype, "setSecret");
-      let s1 = sandbox.spy(inst.remote, "buildPaymentTx");
-      let s2 = sandbox.stub(Transaction.prototype, "setTransferRate");
-      let s3 = sandbox.spy(Transaction.prototype, "addMemo");
       inst.connect().then(() => {
         inst.transfer(testSecret, testDestination, 0.1, {
           jtaddress: "jpgWGpfHz8GxqUjz5nb6ej8eZJQtiF6KhH"
         }).catch(error => {
           expect(error.message).to.equal("Insufficient STM balance to send.")
           done();
-          sandbox.restore();
         });
       })
     })

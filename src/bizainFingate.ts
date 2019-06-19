@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { Remote } from "jcc_jingtum_lib";
 import * as jtWallet from "jcc_wallet/lib/jingtum";
 import IMemo from "./model/memo";
@@ -103,8 +104,18 @@ export default class BizainFingate {
         });
     }
 
+    /**
+     * transfer token
+     *
+     * @param {string} secret
+     * @param {string} destination
+     * @param {string} value amount
+     * @param {IMemo} memo
+     * @returns {Promise<string>}
+     * @memberof BizainFingate
+     */
     @validate
-    public async transfer(@isValidBizainSecret secret: string, @isValidBizainAddress destination: string, @isValidAmount value: number, @isValidMemo memo: IMemo): Promise<string> {
+    public async transfer(@isValidBizainSecret secret: string, @isValidBizainAddress destination: string, @isValidAmount value: string, @isValidMemo memo: IMemo): Promise<string> {
         return new Promise((resolve, reject) => {
             const address = BizainFingate.getAddress(secret);
             const tx = {
@@ -112,7 +123,7 @@ export default class BizainFingate {
                 amount: {
                     currency: this._currency.toUpperCase(),
                     issuer: "",
-                    value
+                    value: new BigNumber(value).toNumber()
                 },
                 to: destination
             };
