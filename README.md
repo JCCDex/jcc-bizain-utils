@@ -22,6 +22,14 @@ e.g. you transfer 1 `BIZ` to [Bizain Fingate](https://bizain.net/bc/explorer/#!/
 npm install jcc-bizain-utils
 ```
 
+## CDN
+
+`jcc_bizain_utils` as a global variable
+
+```javascript
+<script src="https://unpkg.com/jcc-bizain-utils/dist/jcc-bizain-utils.min.js"></script>
+```
+
 ## Usage
 
 ```javascript
