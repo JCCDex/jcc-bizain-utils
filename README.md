@@ -24,7 +24,7 @@ npm install jcc-bizain-utils
 
 ## CDN
 
-`jcc_bizain_utils` as a global variable
+`jcc_bizain_utils` as a global variable.
 
 ```javascript
 <script src="https://unpkg.com/jcc-bizain-utils/dist/jcc-bizain-utils.min.js"></script>
@@ -62,3 +62,7 @@ try {
     instance.disconnect();
 }
 ```
+
+## API
+
+see [API.md](https://github.com/JCCDex/jcc-bizain-utils/blob/master/docs/API.md)

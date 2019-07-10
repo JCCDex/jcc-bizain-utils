@@ -40,18 +40,48 @@ export default class BizainFingate {
         return this._remote;
     }
 
+    /**
+     * validate bizain address is valid or not
+     *
+     * @static
+     * @param {string} address
+     * @returns {boolean}
+     * @memberof BizainFingate
+     */
     public static isValidAddress(address: string): boolean {
         return jtWallet.isValidAddress(address, BizainFingate._token);
     }
 
+    /**
+     * validate bizain secret is valid or not
+     *
+     * @static
+     * @param {string} secret
+     * @returns {boolean}
+     * @memberof BizainFingate
+     */
     public static isValidSecret(secret: string): boolean {
         return jtWallet.isValidSecret(secret, BizainFingate._token);
     }
 
+    /**
+     * retrive address with secret
+     *
+     * @static
+     * @param {string} secret
+     * @returns {(string | null)} return address if secret is valid
+     * @memberof BizainFingate
+     */
     public static getAddress(secret: string): string | null {
         return jtWallet.getAddress(secret, BizainFingate._token);
     }
 
+    /**
+     * init remote instance
+     *
+     * @returns {BizainFingate}
+     * @memberof BizainFingate
+     */
     public init(): BizainFingate {
         const _server = {
             local_sign: this._localSign,
@@ -62,6 +92,12 @@ export default class BizainFingate {
         return this;
     }
 
+    /**
+     * connect to bizain websocket server
+     *
+     * @returns
+     * @memberof BizainFingate
+     */
     public async connect() {
         return new Promise((resolve, reject) => {
             this._remote.connect((error) => {
@@ -73,6 +109,11 @@ export default class BizainFingate {
         });
     }
 
+    /**
+     * disconnect from bizain websocket server
+     *
+     * @memberof BizainFingate
+     */
     public disconnect() {
         this._remote.disconnect();
     }
@@ -107,11 +148,11 @@ export default class BizainFingate {
     /**
      * transfer token
      *
-     * @param {string} secret
-     * @param {string} destination
+     * @param {string} secret bizain secret
+     * @param {string} destination destination bizain address
      * @param {string} value amount
-     * @param {IMemo} memo
-     * @returns {Promise<string>}
+     * @param {IMemo} memo memo
+     * @returns {Promise<string>} resolve hash if success
      * @memberof BizainFingate
      */
     @validate
@@ -128,6 +169,7 @@ export default class BizainFingate {
                 to: destination
             };
 
+            /* istanbul ignore else */
             if (tx.amount.currency !== BizainFingate._token) {
                 tx.amount.issuer = this._issuer;
             }
