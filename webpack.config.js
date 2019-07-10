@@ -15,7 +15,9 @@ const config = {
   resolve: {
     extensions: [".js", ".ts"],
     alias: {
-      "bn.js": path.resolve(__dirname, "node_modules/bn.js")
+      "bn.js": path.resolve(__dirname, "node_modules/bn.js"),
+      "bignumber.js": path.resolve(__dirname, "node_modules/bignumber.js"),
+      "elliptic": path.resolve(__dirname, "node_modules/elliptic")
     }
   },
   mode: process.env.MODE === "dev" ? 'development' : "production",
